@@ -1,6 +1,8 @@
 package br.com.mrickk.smvideo.api;
 
+import br.com.mrickk.smvideo.api.model.DadosSerie;
 import br.com.mrickk.smvideo.api.service.ConsumoApi;
+import br.com.mrickk.smvideo.api.service.ConverteDados;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +17,10 @@ public class SeriesApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		var consumoApi = new ConsumoApi();
-		var json = consumoApi.obterDados("https://www.omdbapi.com/?i=tt3896198&apikey=e703c90b");
+		var json = consumoApi.obterDados("http://www.omdbapi.com/?t=Peaky+Blinders&apikey=e703c90b");
+		System.out.println(json);
+		ConverteDados conversor = new ConverteDados();
+		DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
+		System.out.println(dados);
 	}
 }
