@@ -3,6 +3,7 @@ package br.com.mrickk.smvideo.api.principal;
 import br.com.mrickk.smvideo.api.model.DadosEpisodio;
 import br.com.mrickk.smvideo.api.model.DadosSerie;
 import br.com.mrickk.smvideo.api.model.DadosTemporada;
+import br.com.mrickk.smvideo.api.model.Episodio;
 import br.com.mrickk.smvideo.api.service.ConsumoApi;
 import br.com.mrickk.smvideo.api.service.ConverteDados;
 
@@ -58,6 +59,12 @@ public class Principal {
                 .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        List<Episodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                        .map(d -> new Episodio(t.numero(), d))).toList();
+
+        episodios.forEach(System.out::println);
 
     }
 }
