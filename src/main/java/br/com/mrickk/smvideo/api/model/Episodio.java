@@ -4,6 +4,7 @@ package br.com.mrickk.smvideo.api.model;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 @Getter
 @Setter
@@ -27,6 +28,10 @@ public class Episodio {
         } catch (NumberFormatException ex) {
             this.avaliacao = 0.0;
         }
-        this.dataLancamento = LocalDate.parse(dadosEpisodio.dataLancamento());
+        try {
+            this.dataLancamento = LocalDate.parse(dadosEpisodio.dataLancamento());
+        } catch (DateTimeParseException ex) {
+            this.dataLancamento = null;
+        }
     }
 }
