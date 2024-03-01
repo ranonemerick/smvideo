@@ -7,11 +7,12 @@ import br.com.mrickk.smvideo.api.model.Episodio;
 import br.com.mrickk.smvideo.api.service.ConsumoApi;
 import br.com.mrickk.smvideo.api.service.ConverteDados;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -65,6 +66,20 @@ public class Principal {
                         .map(d -> new Episodio(t.numero(), d))).toList();
 
         episodios.forEach(System.out::println);
+
+        System.out.println("A partir de que data você deseja ver os espisodios?");
+        var ano = sc.nextInt();
+        sc.nextLine();
+
+        LocalDate dataBusca = LocalDate.of(ano, 1, 1);
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episodios.stream().filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getTemporada()
+                        + " Episódio: " + e.getTitulo()
+                        + " Data lançamento: " + e.getDataLancamento().format(formatador)
+                ));
 
     }
 }
