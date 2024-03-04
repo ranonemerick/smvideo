@@ -10,6 +10,7 @@ import br.com.mrickk.smvideo.api.service.ConverteDados;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -68,16 +69,16 @@ public class Principal {
                         .map(d -> new Episodio(t.numero(), d))).toList();
         episodios.forEach(System.out::println);
 
-        System.out.println("Digite o nome do episodio: ");
-        var trechoTitulo = sc.nextLine();
-        Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(e -> e.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase())).findFirst();
-        if(episodioBuscado.isPresent()) {
-            System.out.println("Episodio encontrado!");
-            System.out.println("Tempoarada: " + episodioBuscado.get().getTemporada());
-        } else {
-            System.out.println("Episodio não encontrado! ");
-        }
+//        System.out.println("Digite o nome do episodio: ");
+//        var trechoTitulo = sc.nextLine();
+//        Optional<Episodio> episodioBuscado = episodios.stream()
+//                .filter(e -> e.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase())).findFirst();
+//        if(episodioBuscado.isPresent()) {
+//            System.out.println("Episodio encontrado!");
+//            System.out.println("Tempoarada: " + episodioBuscado.get().getTemporada() + " Episódio: " + episodioBuscado.get().getNumeroEpisodio());
+//        } else {
+//            System.out.println("Episodio não encontrado! ");
+//        }
 
 //        System.out.println("A partir de que data você deseja ver os espisodios?");
 //        var ano = sc.nextInt();
@@ -93,6 +94,10 @@ public class Principal {
 //                        + " Data lançamento: " + e.getDataLancamento().format(formatador)
 //                ));
 
+        Map<Integer, Double> avaliacoesPorTemporada = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getAvaliacao)));
 
+        System.out.println(avaliacoesPorTemporada);
     }
 }
