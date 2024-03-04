@@ -10,6 +10,7 @@ import java.util.OptionalDouble;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Serie {
 
     private String titulo;
