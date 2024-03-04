@@ -1,5 +1,6 @@
 package br.com.mrickk.smvideo.api.model;
 
+import br.com.mrickk.smvideo.api.service.ConsultaChatGPT;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Serie {
         this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
         this.atores = dadosSerie.atores();
         this.poster = dadosSerie.poster();
-        this.sinopse = dadosSerie.sinopse();
+        this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse().trim());
     }
     
 }
