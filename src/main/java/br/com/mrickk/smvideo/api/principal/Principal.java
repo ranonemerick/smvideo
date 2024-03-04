@@ -1,14 +1,11 @@
 package br.com.mrickk.smvideo.api.principal;
 
-import br.com.mrickk.smvideo.api.model.DadosEpisodio;
 import br.com.mrickk.smvideo.api.model.DadosSerie;
 import br.com.mrickk.smvideo.api.model.DadosTemporada;
 import br.com.mrickk.smvideo.api.model.Episodio;
 import br.com.mrickk.smvideo.api.service.ConsumoApi;
 import br.com.mrickk.smvideo.api.service.ConverteDados;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -97,7 +94,15 @@ public class Principal {
         Map<Integer, Double> avaliacoesPorTemporada = episodios.stream()
                 .filter(e -> e.getAvaliacao() > 0.0)
                 .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getAvaliacao)));
-
         System.out.println(avaliacoesPorTemporada);
+
+        DoubleSummaryStatistics est = episodios
+                .stream().filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+        System.out.println("Média: " + est.getAverage());
+        System.out.println("Episodio mais bem avaliado: " + est.getMax());
+        System.out.println("Epísodio pior avaliado: " + est.getMin());
+        System.out.println("Quantidade de episódios avalidos: " + est.getCount());
+
     }
 }
