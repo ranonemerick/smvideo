@@ -3,8 +3,10 @@ package br.com.mrickk.smvideo.api.principal;
 import br.com.mrickk.smvideo.api.model.DadosSerie;
 import br.com.mrickk.smvideo.api.model.DadosTemporada;
 import br.com.mrickk.smvideo.api.model.Serie;
+import br.com.mrickk.smvideo.api.repository.SeriesRepository;
 import br.com.mrickk.smvideo.api.service.ConsumoApi;
 import br.com.mrickk.smvideo.api.service.ConverteDados;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,6 +23,12 @@ public class Principal {
     private final String API_KEY = "&apikey=e703c90b";
 
     private List<DadosSerie> dadosSeries = new ArrayList<>();
+
+    private SeriesRepository repository;
+
+    public Principal(SeriesRepository repository) {
+        this.repository = repository;
+    }
 
     public void exibeMenu() {
         var opcao = -1;
@@ -58,7 +66,9 @@ public class Principal {
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
-        dadosSeries.add(dados);
+        Serie serie = new Serie(dados);
+//        dadosSeries.add(dados);
+        repository.save(serie);
         System.out.println(dados);
     }
 
@@ -82,9 +92,7 @@ public class Principal {
         temporadas.forEach(System.out::println);
     }
     private void listarSeriesBuscadas() {
-        List<Serie> series = new ArrayList<>();
-        series = dadosSeries.stream().map(d -> new Serie(d))
-                        .collect(Collectors.toList());
+        List<Serie> series = repository.findAll();
         series.stream().sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }

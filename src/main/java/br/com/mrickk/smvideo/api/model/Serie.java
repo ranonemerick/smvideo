@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
@@ -31,6 +33,9 @@ public class Serie {
     private String atores;
     private String poster;
     private String sinopse;
+
+    @Transient
+    private List<Episodio> episodio  = new ArrayList<>();
 
 
     public Serie(DadosSerie dadosSerie) {
