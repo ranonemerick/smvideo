@@ -48,5 +48,9 @@ public class Serie {
         this.sinopse = dadosSerie.sinopse();
 //        this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse().trim());
     }
-    
+
+    public void setEpisodio(List<Episodio> episodio) {
+        episodio.forEach(e -> e.setSerie(this));
+        this.episodio = episodio;
+    }
 }
