@@ -2,6 +2,7 @@ package br.com.mrickk.smvideo.api.principal;
 
 import br.com.mrickk.smvideo.api.model.DadosSerie;
 import br.com.mrickk.smvideo.api.model.DadosTemporada;
+import br.com.mrickk.smvideo.api.model.Episodio;
 import br.com.mrickk.smvideo.api.model.Serie;
 import br.com.mrickk.smvideo.api.repository.SeriesRepository;
 import br.com.mrickk.smvideo.api.service.ConsumoApi;
@@ -99,6 +100,13 @@ public class Principal {
                 temporadas.add(dadosTemporada);
             }
             temporadas.forEach(System.out::println);
+
+            List<Episodio> episodios = temporadas.stream()
+                    .flatMap(d -> d.episodios().stream()
+                            .map(e -> new Episodio(d.numero(), e))).collect(Collectors.toList());
+            serieEncontrada.setEpisodio(episodios);
+            repository.save(serieEncontrada);
+
         } else {
             System.out.println("Série não encontrada! ");
         }
