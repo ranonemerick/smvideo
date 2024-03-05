@@ -34,7 +34,7 @@ public class Serie {
     private String poster;
     private String sinopse;
 
-    @Transient
+    @OneToMany(mappedBy = "serie", fetch = FetchType.EAGER)
     private List<Episodio> episodio  = new ArrayList<>();
 
 
